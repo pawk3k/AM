@@ -1,0 +1,9 @@
+.main{
+  display: grid
+}
+#orange{
+  grid-area: header;
+}
+#white{
+  grid-area: footer ;
+}

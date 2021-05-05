@@ -1,0 +1,23 @@
+PROJEKT
+APLIKACJĘ  MOBILNE
+Autorzy:
+Pavlo Ravliv 135420
+Denys Hromniuk 141232
+
+Opis aplikacji:
+Aplikacja jest szablonem aplikacji kryptowalutowej. Aplikacją służy do sprawdzania aktualnego kursu kryptowalut, oraz do przechowywania różnych walut na własnym koncie. Ten typ aplikacji wybraliśmy bo jestesmy pasjonatami kryptowalut i ten temat jest bardzo na czasie. Przykład: bitwala.
+Nasz produkt jest inny od podobnych tym że posiada tylko podstawowe , wybrane przez nas funkcjonalności co upraszcza korzystanie z niego.
+ 
+Założenia techniczne:
+Wersja Androida: 4.0.1+
+Funkcjonalności: Lokalna baza danych , zdalna baza danych 
+
+Opis szczegółowy:
+1. Login Activity - początkowe aktivity, z tej strony możemy zalogować się lub zarejestrować nowego użytkownika. Po zalogowaniu przechodzimy do Konto activity.
+2. Register Activity - activity rejestrowania, po rejestracji przechodzimy do Konto activity.
+3. Konto Activty - strona potrzebująca logowania, dane do logowania przechowywane na zdalnej bazie danych. Na lokalnej bazie danych przechowywane są preferencje czyli ulubione kryptowaluty danego użytkownika. Na tym akvity możemy zobaczyć stan konta danego użytkownika (kryptowaluty). Jest przycisk do startowania All Crypto Activity.
+4. All Crypto Activity  - activity z wszystkimi walutami gdzie obok każdej waluty po lewej stronie znajduje się gwiazdka która dodaje do ulubionych crypto activity , a po prawej znak + po wciśnięciu którego dostajemy wyskakuje dialog zasilania konta daną walutą. 
+
+Kod znajduje sie na repozytorium.
+
+Link na repo: https://github.com/MrSydar/Crypto-Bank 
