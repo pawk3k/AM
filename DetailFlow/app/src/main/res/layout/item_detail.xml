@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#4CAF50"
     android:gravity="center"
     android:padding="16dp"
     android:textIsSelectable="true"
-    tools:context=".fragments.ItemDetailFragment" />
+    tools:context=".fragments.RunDetailFragment" />

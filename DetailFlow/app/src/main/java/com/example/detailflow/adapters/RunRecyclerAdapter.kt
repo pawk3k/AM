@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.detailflow.activities.ItemDetailActivity
-import com.example.detailflow.fragments.ItemDetailFragment
-import com.example.detailflow.activities.ItemListActivity
+import com.example.detailflow.activities.RunDetailActivity
+import com.example.detailflow.fragments.RunDetailFragment
+import com.example.detailflow.activities.RunListActivity
 import com.example.detailflow.R
 
 class RunRecyclerAdapter(
-    private val parentActivity: ItemListActivity,
+    private val parentActivity: RunListActivity,
     private val values: List<String>,
     private val data: HashMap<String, String>,
     private val tablet : Boolean
@@ -41,9 +41,9 @@ class RunRecyclerAdapter(
                 val description = data[item]
                 println(description)
                 if (tablet) {
-                    val fragment = ItemDetailFragment().apply {
+                    val fragment = RunDetailFragment().apply {
                         arguments = Bundle().apply {
-                            putString(ItemDetailFragment.ARG_ITEM_ID, description)
+                            putString(RunDetailFragment.ARG_ITEM_ID, description)
                         }
                     }
                     parentActivity.supportFragmentManager
@@ -51,8 +51,8 @@ class RunRecyclerAdapter(
                         .replace(R.id.item_detail_container, fragment)
                         .commit()
                 } else {
-                    val intent = Intent(this.context, ItemDetailActivity::class.java).apply {
-                        putExtra(ItemDetailFragment.ARG_ITEM_ID, description)
+                    val intent = Intent(this.context, RunDetailActivity::class.java).apply {
+                        putExtra(RunDetailFragment.ARG_ITEM_ID, description)
                     }
                     this.context.startActivity(intent)
                 }

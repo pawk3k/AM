@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DetailFlow">
         <activity
-            android:name=".activities.ItemListActivity"
+            android:name=".activities.RunListActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.DetailFlow.NoActionBar">
             <intent-filter>
@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ItemDetailActivity"
+            android:name=".activities.RunDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".activities.ItemListActivity"
+            android:parentActivityName=".activities.RunListActivity"
             android:theme="@style/Theme.DetailFlow.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.detailflow.activities.ItemListActivity" />
+                android:value="com.example.detailflow.activities.RunListActivity" />
         </activity>
     </application>
 
