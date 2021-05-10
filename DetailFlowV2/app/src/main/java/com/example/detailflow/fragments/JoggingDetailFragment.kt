@@ -13,18 +13,28 @@ import com.example.detailflow.R
 class JoggingDetailFragment : Fragment() {
     private var item: String? = null
     private var joggingId = 0
+    public var fragment: StoperFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
                 item = it.getString(ARG_ITEM_ID)
+                fragment = StoperFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(JoggingDetailFragment.ARG_ITEM_ID, item)
+                    }
+                }
             }
         }
 
         if (savedInstanceState == null) {
-            val stoper = StoperFragment();
+//            val stoper = StoperFragment();
+
             val fm =
-                childFragmentManager.beginTransaction().add(R.id.stoper_container, stoper).commit()
+                fragment?.let {
+                    childFragmentManager.beginTransaction().add(R.id.stoper_container, it)
+                        .commit()
+                }
 
 
 //            supportFragmentManager.beginTransaction()

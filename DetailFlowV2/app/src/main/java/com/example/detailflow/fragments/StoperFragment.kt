@@ -26,6 +26,8 @@ class StoperFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private var item: String? = null
     private var seconds: Int = 0;
     private var running = false;
     private var wasRunning = false;
@@ -33,9 +35,12 @@ class StoperFragment : Fragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            if (it.containsKey(JoggingDetailFragment.ARG_ITEM_ID)) {
+                item = it.getString(JoggingDetailFragment.ARG_ITEM_ID)
+            }
         }
+
+
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
@@ -119,7 +124,7 @@ class StoperFragment : Fragment(), View.OnClickListener {
 
 //        val sharedScore = getSharedPreferences("com.example.myapplication.shared", 0)
         val edit = preferences.edit()
-        edit.putInt("${}", appliedValue)
+        edit.putInt("${item}", appliedValue)
         edit.apply()
     }
 
@@ -129,7 +134,7 @@ class StoperFragment : Fragment(), View.OnClickListener {
             .getSharedPreferences("pref", Context.MODE_PRIVATE)
 //        val sharedScore = this.getSharedPreferences("com.example.myapplication.shared", 0)
 
-        score = preferences.getInt("score", 0)
+        score = preferences.getInt("${item}", 0)
         return score
     }
 
