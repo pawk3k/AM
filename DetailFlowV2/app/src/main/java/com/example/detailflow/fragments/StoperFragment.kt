@@ -33,8 +33,10 @@ class StoperFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val LAST_RECORD_INDEX = 0
     private val LAST_RECORD = "Last Record"
     private val BEST_RECORD = "Best Record"
+    private val BEST_RECORD_INDEX = 1
     private var item: String? = null
     private var seconds: Int = 0;
     private var running = false;
@@ -73,7 +75,10 @@ class StoperFragment : Fragment(), View.OnClickListener {
         val layout: View = inflater.inflate(R.layout.fragment_stopper, container, false)
         runStoper(layout)
 
-        layout.findViewById<TextView>(R.id.last_result).text = getRecord().toString()
+        layout.findViewById<TextView>(R.id.last_result).text =
+            getRecord()[LAST_RECORD_INDEX].toString()
+        layout.findViewById<TextView>(R.id.best_result).text =
+            getRecord()[BEST_RECORD_INDEX].toString()
         val startButton: Button = layout.findViewById<View>(R.id.start_button) as Button
         startButton.setOnClickListener(this)
         val stopButton: Button = layout.findViewById<View>(R.id.stop_button) as Button
@@ -116,6 +121,9 @@ class StoperFragment : Fragment(), View.OnClickListener {
     fun onClickSave() {
         activity?.findViewById<TextView>(R.id.last_result)?.text =
             "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
+
+        activity?.findViewById<TextView>(R.id.best_result)?.text =
+            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
         setRecord()
     }
 
@@ -144,17 +152,23 @@ class StoperFragment : Fragment(), View.OnClickListener {
             "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
         )
 
-        scoreBest = preferences.getString("${item}:${BEST_RECORD}", "")
+        edit.putString(
+            "${item}$BEST_RECORD",
+            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
+        )
+
+//        scoreBest = preferences.getString("${item}:${BEST_RECORD}", "")
         edit.apply()
     }
 
-    fun getRecord(): String? {
+    fun getRecord(): Array<String?> {
 
         val preferences = this.activity!!
             .getSharedPreferences("pref", Context.MODE_PRIVATE)
         score = preferences.getString("${item}", "")
-//        scoreBest = preferences.getString("${item}:${BEST_RECORD}", "")
-        return score
+        scoreBest = preferences.getString("${item}${BEST_RECORD}", "")
+
+        return arrayOf(score, scoreBest)
     }
 
     private fun runStoper(view: View) {
