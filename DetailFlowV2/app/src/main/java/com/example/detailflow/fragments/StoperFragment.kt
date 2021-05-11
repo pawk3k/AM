@@ -1,7 +1,6 @@
 package com.example.detailflow.fragments
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -9,13 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.detailflow.R
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -120,11 +115,11 @@ class StoperFragment : Fragment(), View.OnClickListener {
 
     fun onClickSave() {
         activity?.findViewById<TextView>(R.id.last_result)?.text =
-            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
+            activity?.findViewById<TextView>(R.id.time_view)?.text
 
-        activity?.findViewById<TextView>(R.id.best_result)?.text =
-            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
+        activity?.findViewById<TextView>(R.id.best_result)?.text = getRecord()[BEST_RECORD_INDEX]
         setRecord()
+
     }
 
     override fun onClick(v: View?) {
@@ -147,19 +142,51 @@ class StoperFragment : Fragment(), View.OnClickListener {
         val preferences = this.activity!!
             .getSharedPreferences("pref", Context.MODE_PRIVATE)
         val edit = preferences.edit()
+        val textViewValue = activity?.findViewById<TextView>(R.id.time_view)?.text
         edit.putString(
             "${item}",
-            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
+            "Date :${getCurrentDate()} | ${textViewValue}"
         )
-
-        edit.putString(
-            "${item}$BEST_RECORD",
-            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
-        )
-
-//        scoreBest = preferences.getString("${item}:${BEST_RECORD}", "")
+        if (getRecord()[BEST_RECORD_INDEX] != "" && outerEvalueteTime()) {
+        } else {
+            edit.putString(
+                "${item}$BEST_RECORD",
+                "Date :${getCurrentDate()} | ${textViewValue}"
+            )
+        }
         edit.apply()
     }
+
+    fun outerEvalueteTime(): Boolean {
+        var result = false
+        getRecord()[BEST_RECORD_INDEX]?.split("|")?.get(1)?.let { it1 ->
+            result = evalueateTime(
+                activity?.findViewById<TextView>(R.id.time_view)?.text as String,
+                it1
+            )
+        }
+
+        return result
+    }
+
+    fun evalueateTime(lastRecord: String, bestRegord: String): Boolean {
+        println(lastRecord)
+        println(bestRegord)
+
+        val splitedFirstRecord = lastRecord.split(":")
+        val splitedSecondRecord = bestRegord.split(":")
+        val totalSecondsFirstRecord =
+            splitedFirstRecord[2]
+                .toInt() + splitedFirstRecord[1].toInt() * 60 + splitedFirstRecord[0].trim()
+                .toInt() * 3600
+        val totalSecondsSecondRecord =
+            splitedSecondRecord[2]
+                .toInt() + splitedSecondRecord[1].toInt() * 60 + splitedSecondRecord[0].trim()
+                .toInt() * 3600
+
+        return totalSecondsSecondRecord < totalSecondsFirstRecord
+    }
+
 
     fun getRecord(): Array<String?> {
 
