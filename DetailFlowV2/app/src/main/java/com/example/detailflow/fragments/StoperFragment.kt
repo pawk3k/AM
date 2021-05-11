@@ -1,6 +1,7 @@
 package com.example.detailflow.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -8,8 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.detailflow.R
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,12 +33,15 @@ class StoperFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private val LAST_RECORD = "Last Record"
+    private val BEST_RECORD = "Best Record"
     private var item: String? = null
     private var seconds: Int = 0;
     private var running = false;
     private var wasRunning = false;
-    private var score = 32;
+    private var score: String? = "brak";
+    private var scoreLast: String? = "brak";
+    private var scoreBest: String? = "brak";
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,7 +56,6 @@ class StoperFragment : Fragment(), View.OnClickListener {
             running = savedInstanceState.getBoolean("running");
             wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
-//        getRecord()
     }
 
 
@@ -105,8 +114,9 @@ class StoperFragment : Fragment(), View.OnClickListener {
     }
 
     fun onClickSave() {
-        seconds += 20
-        setRecord(seconds)
+        activity?.findViewById<TextView>(R.id.last_result)?.text =
+            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
+        setRecord()
     }
 
     override fun onClick(v: View?) {
@@ -118,23 +128,32 @@ class StoperFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun setRecord(appliedValue: Int) {
+    fun getCurrentDate(): String {
+
+        val sdf = SimpleDateFormat("dd/M/yyyy")
+        val currentDate = sdf.format(Date())
+        return currentDate
+    }
+
+    fun setRecord() {
         val preferences = this.activity!!
             .getSharedPreferences("pref", Context.MODE_PRIVATE)
-
-//        val sharedScore = getSharedPreferences("com.example.myapplication.shared", 0)
         val edit = preferences.edit()
-        edit.putInt("${item}", appliedValue)
+        edit.putString(
+            "${item}",
+            "Date :${getCurrentDate()}: ${activity?.findViewById<TextView>(R.id.time_view)?.text}"
+        )
+
+        scoreBest = preferences.getString("${item}:${BEST_RECORD}", "")
         edit.apply()
     }
 
-    fun getRecord(): Int {
+    fun getRecord(): String? {
 
         val preferences = this.activity!!
             .getSharedPreferences("pref", Context.MODE_PRIVATE)
-//        val sharedScore = this.getSharedPreferences("com.example.myapplication.shared", 0)
-
-        score = preferences.getInt("${item}", 0)
+        score = preferences.getString("${item}", "")
+//        scoreBest = preferences.getString("${item}:${BEST_RECORD}", "")
         return score
     }
 
